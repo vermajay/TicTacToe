@@ -4,7 +4,6 @@ const newGameBtn = document.querySelector(".btn");
 
 let currentPlayer;
 let gameGrid;
-let cellCount = 0;    //this is for condition when the game ties
 
 const winningPositions = [
     [0,1,2],
@@ -26,7 +25,6 @@ function initGame(){
         boxes[index].classList.remove("win");
         boxes[index].style.pointerEvents = "all";
     })
-    cellCount = 0;
     newGameBtn.classList.remove("active");
     gameInfo.innerText = `Current Player - ${currentPlayer}`;
 }
@@ -39,7 +37,6 @@ boxes.forEach((box, index)=>{
 });
 
 function handleClick(index){
-    cellCount++;
     boxes[index].innerText = currentPlayer;
     boxes[index].style.pointerEvents = "none";
     gameGrid[index] = currentPlayer;
@@ -59,7 +56,7 @@ function checkWin(){
         if((gameGrid[position[0]] !== "")
         && ((gameGrid[position[0]] == gameGrid[position[1]]) && (gameGrid[position[1]] == gameGrid[position[2]]))){
 
-            let answer = gameGrid[position[0]];
+            answer = gameGrid[position[0]];
             gameInfo.innerText = `Winner Player - ${answer}`;
 
             boxes[position[0]].classList.add("win");
@@ -74,11 +71,13 @@ function checkWin(){
             return;
         }
     });
-
-    //if all the cells are filled and no winner is there
-    if(cellCount == 9){
+    let cellCount = 0;
+    for(let i=0; i<9; i++){
+        if(gameGrid[i] !== "") cellCount++;
+    }
+    if(cellCount == 9 && answer == ""){
+        gameInfo.innerText = "Game Tied!";
         newGameBtn.classList.add("active");
-        gameInfo.innerText = "Game Tied!"
     }
 }
 
