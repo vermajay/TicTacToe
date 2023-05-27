@@ -5,6 +5,9 @@ const newGameBtn = document.querySelector(".btn");
 let currentPlayer;
 let gameGrid;
 
+// import JSConfetti from 'js-confetti'
+const jsConfetti = new JSConfetti();
+
 const winningPositions = [
     [0,1,2],
     [3,4,5],
@@ -51,6 +54,7 @@ function switchUser(){
 }
 
 function checkWin(){
+    let answer = "";
     winningPositions.forEach((position)=>{
         //all 3 positions must be non-empty and same
         if((gameGrid[position[0]] !== "")
@@ -58,6 +62,7 @@ function checkWin(){
 
             answer = gameGrid[position[0]];
             gameInfo.innerText = `Winner Player - ${answer}`;
+            jsConfetti.addConfetti();
 
             boxes[position[0]].classList.add("win");
             boxes[position[1]].classList.add("win");
@@ -75,6 +80,7 @@ function checkWin(){
     for(let i=0; i<9; i++){
         if(gameGrid[i] !== "") cellCount++;
     }
+    console.log(cellCount, answer);
     if(cellCount == 9 && answer == ""){
         gameInfo.innerText = "Game Tied!";
         newGameBtn.classList.add("active");
